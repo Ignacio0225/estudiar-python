@@ -231,4 +231,152 @@ for website in websites:
     results[website] = "FALIED"
 print(results)
 
+
+class Puppy:
+  def __init__(self):
+   self.name = "Ruffus"
+   self.age = 0.1
+   self.breed = "beegle" 
+
+ruffus = Puppy()
+bibi = Puppy()
+print(ruffus.name, bibi.name) #둘은 동일하게 같은걸 갖고 있음  self로 자기자신을 불러오기때문 
+
+
+
+
+class Puppy:
+  def __init__(self,name,breed):
+   self.name = name
+   self.age = 0.1
+   self.breed = breed
+
+ruffus = Puppy( name = "Ruggus",breed = "Beagle")
+
+bibi = Puppy("Bibi","Dalathian")
+
+print(ruffus.name, bibi.name)
+
+#루푸스 이름과 비비이름이 설정된후 출력
+
+
+class Puppy:
+  def __init__(self,name,breed):
+   self.name = name
+   self.age = 0.1
+   self.breed = breed
+
+  def __str__(self):
+    return f"{self.breed} named puppy is{self.name}"
+
+ruffus = Puppy( name = "Ruffus",breed = "Beagle")
+bibi = Puppy("Bibi","Dalathian")
+print(ruffus, bibi) #__str__메소드가 들어가면 굳이 프린트에 메소드를 넣지 않아도 모든정보를 가져올 수 있음 ( __str__ 자동으로 불러와주는 메소드)
+
+from typing import get_args
+
+
+class Dog:
+
+  def __init__(self, name, breed, age):
+    self.name = name
+    self.breed = breed
+    self.age = age
+
+  def sleep(self):
+    print("zzzzzz.......")
+
+
+class GuardDog(Dog):
+
+  def __init__(self, name, breed):
+    super().__init__(
+        name,
+        breed,
+        5,
+    )
+    self.agrresive = True #Dog 클래스와 별개로 다른 property를 가질 수있음
+    
+  def rrrrr(self):
+    print("stay away")
+
+
+class Puppy(Dog):
+
+  def __init__(self, name, breed):
+    super().__init__(
+        name,
+        breed,
+        0.1,
+    )
+    self.spoiled = True#Dog 클래스와 별개로 다른 property를 가질 수있음
+
+  
+  #  self.name = name
+  #  self.age = 0.1
+  #  self.breed = breed
+
+  # def __str__(self):
+     # return f"{self.breed} named puppy is {self.name}"
+
+  def woof_woof(self):
+    print("woof woof")
+
+  # def introduce(self):
+  #   self.woof_woof()
+  #   print(f"my name is {self.name} and I'm a baby {self.breed}")
+  #   self.woof_woof()
+
+
+ruffus = Puppy(name="Ruffus", breed="Beagle")
+bibi = GuardDog("Bibi", "Dalathian")
+print(ruffus, bibi)
+
+# bibi.introduce() # __str__메소드가 들어가면 굳이 프린트에 메소드를 넣지 않아도 모든정보를 가져올 수 있음 ( __str__ 자동으로 불러와주는 메소드)
+
+ruffus.woof_woof()
+bibi.rrrrr()
+
+ruffus.sleep()
+
 """
+
+# class Player:
+
+#   def __init__(self, name, team):
+#     self.name = name
+#     self.xp = 1500
+#     self.team = team
+
+#   def introduce(self):
+#     print(f"hello I`m {self.name} and I play for {self.team}")
+
+# class Team:
+
+#   def __init__(self, team_name):
+#     self.team_name = team_name
+#     self.players = []
+
+#   def show_players(self):
+#     for player in self.players:
+#       player.introduce()
+
+#   def add_player(self, name):
+#     new_player = Player(name, self.team_name)
+#     self.players.append(new_player)
+
+# team_x = Team("Team X")
+
+# teamtest = team_x.add_player("nico")
+
+# team_x.show_players()
+
+# team_blue = Team("Blue Team")
+
+# team_blue.add_player("lynn")
+
+# team_blue.show_players()
+
+# 팀에서 플레이어를 리무브 하는법을 해보기
+
+import webscrape
