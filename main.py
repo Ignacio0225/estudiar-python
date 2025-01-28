@@ -380,3 +380,62 @@ ruffus.sleep()
 # 팀에서 플레이어를 리무브 하는법을 해보기
 
 import webscrape
+
+
+
+from playwright.sync_api import sync_playwright
+from bs4 import BeautifulSoup
+import time
+
+class JobScraper:
+    def __init__(self, url, scroll_count=5, scroll_pause=5):
+        self.url = url
+        self.scroll_count = scroll_count
+        self.scroll_pause = scroll_pause
+        self.jobs_db = []
+
+    def fetch_page_content(self):
+        """Playwright를 사용하여 페이지 콘텐츠를 가져옵니다."""
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=False)
+            page = browser.new_page()
+            page.goto(self.url)
+
+            # 페이지 스크롤
+            for _ in range(self.scroll_count):
+                time.sleep(self.scroll_pause)
+                page.keyboard.down("End")
+            
+            time.sleep(self.scroll_pause)
+            content = page.content()
+            browser.close()
+        return content
+
+    def parse_jobs(self, content):
+        """BeautifulSoup을 사용하여 HTML에서 잡 정보를 추출합니다."""
+        soup = BeautifulSoup(content, "html.parser")
+        jobs = soup.find_all("div", class_="JobCard_container__REty8")
+        for job in jobs:
+            link = f"https://www.wanted.co.kr/{job.find('a')['href']}"  # 링크 추출
+            title = job.find("strong", class_="JobCard_title__HBpZf").text
+            company_name = job.find("span", class_="JobCard_companyName__N1YrF").text
+            reward = job.find("span", class_="JobCard_reward__cNlG5").text
+            self.jobs_db.append({
+                "title": title,
+                "company_name": company_name,
+                "reward": reward,
+                "link": link
+            })
+
+    def scrape_jobs(self):
+        """잡 스크래핑의 전체 프로세스를 실행합니다."""
+        content = self.fetch_page_content()
+        self.parse_jobs(content)
+        return self.jobs_db
+
+# 실행 코드
+if __name__ == "__main__":
+    scraper = JobScraper(url="https://www.wanted.co.kr/search?query=flutter&tab=position")
+    jobs = scraper.scrape_jobs()
+    print(jobs)
+    print(f"Total jobs scraped: {len(jobs)}")
