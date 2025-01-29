@@ -29,6 +29,7 @@ class challenge4:
                 "link" : link,
                 }
             self.all_job.append(self.job_data)
+            
 
             # if self.job_data not in self.all_job:
             #     self.all_job.append(self.job_data)
@@ -78,14 +79,14 @@ class challenge4:
 engineering = challenge4(url = "https://berlinstartupjobs.com/engineering/page/1/")
 skill = challenge4(url = "https://berlinstartupjobs.com/skill-areas/python/")
 
-#skill.saveCsv(filename="test1.csv",method = skill.skill_page)
-#engineering.saveCsv(filename="test2.csv",method = engineering.change_page)
+# skill.saveCsv(filename="skill.csv",method = skill.skill_page)
+# engineering.saveCsv(filename="engineering.csv",method = engineering.change_page)
 
 print(len(skill.skill_page()))
 print(len(engineering.change_page()))
 
-everything = skill.skill_page() + engineering.change_page()
-print(len(everything))
+# everything = skill.skill_page() + engineering.change_page()
+# print(len(everything))
 
 # all_job_combine = []
 
