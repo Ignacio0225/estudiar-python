@@ -8,7 +8,7 @@ class challenge4:
     def __init__(self,url):
         self.url = url
         self.all_job =[]
-        self.keywords = ["python","typescript","javascript"]
+        self.keywords = ["python","typescript","javascript","rust"]
 
     def scrape(self):
         self.response = requests.get(self.url,headers={"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"})
@@ -50,6 +50,11 @@ class challenge4:
             self.url = f"https://berlinstartupjobs.com/skill-areas/{keyword}/"
             self.scrape()
         return self.all_job
+    
+    def skill_page_keyword(self,keyword):
+            self.url = f"https://berlinstartupjobs.com/skill-areas/{keyword}/"
+            self.scrape()
+            return self.all_job
 
     def saveCsv(self,filename,method):
         method()
@@ -60,12 +65,27 @@ class challenge4:
             writer.writerow(job.values())
         file.close()
 
+    def saveForUser(self,filename,all_jobs):
+        file = open(f"{filename}.csv","w")
+        writer = csv.writer(file)
+        writer.writerow(["Company","Title","Disc","Link"])
+        for job in all_jobs:
+            writer.writerow(job.values())
+        file.close()
+
+   
+
 engineering = challenge4(url = "https://berlinstartupjobs.com/engineering/page/1/")
 skill = challenge4(url = "https://berlinstartupjobs.com/skill-areas/python/")
 
-skill.saveCsv(filename="test1.csv",method = skill.skill_page)
-engineering.saveCsv(filename="test2.csv",method = engineering.change_page)
+#skill.saveCsv(filename="test1.csv",method = skill.skill_page)
+#engineering.saveCsv(filename="test2.csv",method = engineering.change_page)
 
+print(len(skill.skill_page()))
+print(len(engineering.change_page()))
+
+everything = skill.skill_page() + engineering.change_page()
+print(len(everything))
 
 # all_job_combine = []
 
