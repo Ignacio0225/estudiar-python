@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request ,redirect, send_file
-from extractors.chapter7 import challenge4
+from extractors.chapter7 import berlin, web3, wework
 
 app = Flask("JobScrapper")
 
-jobscrapper = challenge4(url = "https://berlinstartupjobs.com/skill-areas/python/")
-
+jobscrapper = berlin(url = "https://berlinstartupjobs.com/skill-areas/python/")
+jobscrapper2 = web3(url = "https://web3.career/python-jobs")
+jobscrapper3 = wework(url = "https://weworkremotely.com/remote-jobs/search?utf8=%E2%9C%93&term=python")
 db = {
 }
 
@@ -20,7 +21,10 @@ def hello():
   if keyword in db:
     jobs = db[keyword]
   else: 
-    jobs = jobscrapper.skill_page_keyword(keyword)
+    jobs1 = jobscrapper.skill_page_keyword(keyword)
+    jobs2 = jobscrapper2.skill_page_keyword(keyword)
+    jobs3 = jobscrapper3.skill_page_keyword(keyword)
+    jobs = jobs1 + jobs2 + jobs3
     db[keyword] = jobs
   return render_template("search.html",keyword = keyword, jobs = jobs)
 
